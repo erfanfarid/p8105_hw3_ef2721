@@ -93,3 +93,19 @@ instacart %>%
   knitr::kable(digits = 2)
 ```
 
+
+## Probelm 2
+
+```{r}
+accel_df = 
+  read_csv("./accel_data.csv") %>% 
+  janitor::clean_names() %>%
+  pivot_longer(
+    activity_1:activity_1440,
+    names_to = "activity_number",
+    values_to = "activity_count") %>%
+  mutate(day_type = ifelse(day %in% c("Saturday", "Sunday"), "weekend", "weekday")) %>% 
+  select(week:day, day_type, everything())
+```
+
+The code chunk above contains the new `accel_df`, which contains `r nrow(accel_df)` rows and `r ncol(accel_df)` columns. The data has been a modification of the accelerometer data to contain the following variables of interest: week of collection, day number of collection, the day of the week data was collected, whether this was a weekday, the activity number record of collection, and lastly the associated activity count per minute.
