@@ -164,8 +164,8 @@ noaa_df =
     tmin = as.numeric(tmin)) %>% 
   mutate(
     tmax = tmax / 10,
-    tmin = tmin / 10) 
-  
+    tmin = tmin / 10)
+
 snow_sort = sort(table(noaa_df$snow), decreasing=TRUE)[1:3]
 ```
 
@@ -205,8 +205,31 @@ tmax_jul =
 (tmax_jan + tmax_jul) 
 ```
 
-In the above code, we have made a two-panel plot showing the average max temperature in months of January and July in each of the stations. By filtering the respective data by month, and then summarizing `mean_tmax` based on location id and date, we can capture the average temp over the years available by month. the color difference is based on the location ID of the satellite. In comparing the figures, we can see the average temperature in July ranges between -20 to 10C and in July ranges between 20-30 for the entire cohort, which seems reasonable. Due to the number of stations, it is more challenging to interpret individual stations based on this graph. There are some outliers in the middle of January with more extreme temperatures. 
+In the above code, we have made a two-panel plot showing the average max temperature in months of January and July in each of the stations. By filtering the respective data by month, and then summarizing `mean_tmax` based on location id and date, we can capture the average temp over the years available by month. the color difference is based on the location ID of the satellite. In comparing the figures, we can see the average temperature in July ranges between -20 to 10C and in July ranges between 20-30C for the entire cohort, which seems reasonable. Due to the number of stations, it is more challenging to interpret individual stations based on this graph. There are some outliers in the middle of January with more extreme temperatures. 
 
 
+```{r}
+tmax_tmin =
+noaa_df %>% 
+  ggplot(aes(x = tmin, y = tmax)) + 
+  geom_smooth(se = FALSE) +
+  labs(
+    x = "Minimum Temperature (C)",
+    y = "Maximum Temperature (C)")
 
+snow_fall =
+noaa_df %>% 
+  filter(snow >0, snow <100) %>% 
+  mutate(year = as.character(year)) %>% 
+  ggplot(aes(x = snow, fill = year)) + 
+  geom_density(alpha = .75) + 
+  labs(
+    title = "Snow Density plot in years",
+    x = "Snow (mm)",
+    y = "Density") +
+  theme(legend.position = "bottom")
 
+(tmax_tmin / snow_fall)
+```
+
+In the code chunk above we made a two-panel plot showing (on top) tmax vs tmin for the full dataset and in the bottom we have density plot of snowfall (mm) for values less than 100 mm over different years. I then used patchwork to put the charts under eachother into a two panel plot. We can tell that snow fall over the years has not changed significantly in it's distribution from 1981-2010. We can see that the Maximum temperatures over the years varry between -10C to 30C, and the minimum temperatures over the years in the entire dataset range between -60C - 40C. 
