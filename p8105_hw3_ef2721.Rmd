@@ -104,8 +104,22 @@ accel_df =
     activity_1:activity_1440,
     names_to = "activity_number",
     values_to = "activity_count") %>%
+  mutate_at("activity_number", str_replace, "activity_", "") %>% 
+  mutate(activity_number = as.numeric(activity_number)) %>% 
   mutate(day_type = ifelse(day %in% c("Saturday", "Sunday"), "weekend", "weekday")) %>% 
   select(week:day, day_type, everything())
 ```
 
 The code chunk above contains the new `accel_df`, which contains `r nrow(accel_df)` rows and `r ncol(accel_df)` columns. The data has been a modification of the accelerometer data to contain the following variables of interest: week of collection, day number of collection, the day of the week data was collected, whether this was a weekday, the activity number record of collection, and lastly the associated activity count per minute.
+
+```{r}
+accel_df %>%
+  group_by(week, day_id, day_type) %>%
+  summarize(
+    daily_act = sum(activity_count)
+  ) %>% 
+  knitr::kable(digits = 2)
+```
+
+In the above code chunk, we used the `group_by` function to isolate data based on unique day_id, and used the `summarize` function to find the aggregate activity count per day. In the table showing the results, I am unable to find any particular trends. Prior to presentation, I used to rank function and included the type of day of exercise to see a trend, but was unable to find any.
+
