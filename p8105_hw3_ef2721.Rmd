@@ -123,7 +123,6 @@ accel_df %>%
 
 In the above code chunk, we used the `group_by` function to isolate data based on unique day_id, and used the `summarize` function to find the aggregate activity count per day. In the table showing the results, I am unable to find any particular trends. Prior to presentation, I used to rank function and included the type of day of exercise to see a trend, but was unable to find any.
 
-Accelerometer data allows the inspection activity over the course of the day. Make a single-panel plot that shows the 24-hour activity time courses for each day and use color to indicate day of the week. Describe in words any patterns or conclusions you can make based on this graph.
 
 ```{r}
 accel_df %>%
@@ -136,5 +135,16 @@ accel_df %>%
   scale_color_hue(name = "Day of the Week")
 ```
 
-From the single-panel plot, it can be inferred that the person is very active starting at midnight, and less active as the day progresses. There are multiple Saturdays were there are no activities recorded. I cannot find a trend in terms of change in global activity throughout the study period. Overall, it seems that this person is less active over the weekends in the last two weekends of the study. 
+From the single-panel plot, it can be inferred that the person is very active starting at midnight, and less active as the day progresses. There are multiple Saturdays were there are no activities recorded. I cannot find a trend in terms of change in global activity throughout the study period. Overall, it seems that this person is less active over the weekends in the last two weekends of the study.
+
+# Problem 3
+
+```{r}
+data("ny_noaa")
+
+noaa_df = ny_noaa %>% 
+  janitor::clean_names()
+```
+
+The `ny_noaa` dataset contains `r nrow(noaa_df)` rows and `r ncol(noaa_df)` columns. Variables include satellite id for area of interest, date of observation, precipitation, amount of snow, depth of snow, and the max and min temperatures. It does seem from an overview that there are a lot of `NA` variables in the dataset.
 
