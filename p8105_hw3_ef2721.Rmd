@@ -114,7 +114,7 @@ The code chunk above contains the new `accel_df`, which contains `r nrow(accel_d
 
 ```{r}
 accel_df %>%
-  group_by(week, day_id, day_type) %>%
+  group_by(day_id, day_type) %>%
   summarize(
     daily_act = sum(activity_count)
   ) %>% 
@@ -122,4 +122,19 @@ accel_df %>%
 ```
 
 In the above code chunk, we used the `group_by` function to isolate data based on unique day_id, and used the `summarize` function to find the aggregate activity count per day. In the table showing the results, I am unable to find any particular trends. Prior to presentation, I used to rank function and included the type of day of exercise to see a trend, but was unable to find any.
+
+Accelerometer data allows the inspection activity over the course of the day. Make a single-panel plot that shows the 24-hour activity time courses for each day and use color to indicate day of the week. Describe in words any patterns or conclusions you can make based on this graph.
+
+```{r}
+accel_df %>%
+  ggplot(aes(x = activity_count, y = day_id, color = day)) + 
+  geom_point(size = 1) + 
+  labs(
+    title = "Daily activity recorded by accelerometer",
+    x = "Activity Count per Minute per Day",
+    y = "Day of Activity") + 
+  scale_color_hue(name = "Day of the Week")
+```
+
+From the single-panel plot, it can be inferred that the person is very active starting at midnight, and less active as the day progresses. There are multiple Saturdays were there are no activities recorded. I cannot find a trend in terms of change in global activity throughout the study period. Overall, it seems that this person is less active over the weekends in the last two weekends of the study. 
 
